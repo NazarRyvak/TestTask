@@ -10,6 +10,9 @@ You can to use command:
 1)add DATE NAME PRICE CURRENCY
 This command adds expense entry to the list of user expenses. Command accepts following parameters: 
 DATE — the date when expense occurred, format — Year-Month-Day.
+NAME — the name of product purchased.
+PRICE — an amount of money spent.
+CURRENCY — currency in which expense occurred.
 2)list
 This command shows the list of all expenses sorted by date.
 3)clear DATE 
