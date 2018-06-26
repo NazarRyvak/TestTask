@@ -1,0 +1,1 @@
+Personal expenses management console application that allows users to track how much money have they spent.
