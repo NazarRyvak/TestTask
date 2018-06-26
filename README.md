@@ -3,7 +3,7 @@ Personal expenses management console application that allows users to track how 
 How to start the program:
 1)Download this repository.
 2)Import zip-archive which you downloaded in your Integrated Development Environment (IDE).
-3)Change the database settings (Test/src/main/java/META-INF) open file 'persistence.xml' and change 'value' in the row '<property name="hibernate.connection.username" value="YOUR USERNAME" />' , '<property name="hibernate.connection.password" value="PASSWORD" />'. Value - which data you use to connect to database.
+3)Change the database settings (Test/src/main/java/META-INF) open file 'persistence.xml' and change 'value' in the row 'property name="hibernate.connection.username" value="YOUR USERNAME" ' , 'property name="hibernate.connection.password" value="PASSWORD" '. Value - which data you use to connect to database.
 4)Run App.java (Test/src/main/java/packageMain).
 
 You can to use command:
