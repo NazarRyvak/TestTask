@@ -9,8 +9,8 @@
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url"
 				value="jdbc:mysql://localhost:3306/TestTask4?useSSL=false&amp;serverTimezone=UTC&amp;createDatabaseIfNotExist=true" />
-			<property name="hibernate.connection.username" value="root" />
-			<property name="hibernate.connection.password" value="20081996nr" />
+			<property name="hibernate.connection.username" value="YOUR USERNAME" />
+			<property name="hibernate.connection.password" value="YOUR PASSWORD" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			
 			<!-- update, create, create-drop -->
