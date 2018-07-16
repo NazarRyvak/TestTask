@@ -23,6 +23,7 @@ public class Converter {
 
 	public static void converter(String str, EntityManager em) throws MalformedURLException, IOException {
 		try {
+			JSONObject json=getJson();
 			BigDecimal sum = new BigDecimal(0);
 			List<Purchase> listP = Query.getListPurchase(em);
 			Iterator<Purchase> iterator = listP.iterator();
@@ -31,8 +32,8 @@ public class Converter {
 				if (p.getCurrency().toString().equals(str)) {
 					sum = sum.add(p.getPrice());
 				} else {
-					BigDecimal courseFrom = course(p.getCurrency().toString());
-					BigDecimal courseTo = course(str).divide(courseFrom,2,BigDecimal.ROUND_HALF_UP);
+					BigDecimal courseFrom =getCource(json, p.getCurrency());
+					BigDecimal courseTo =getCource(json, str).divide(courseFrom,2,BigDecimal.ROUND_HALF_UP);
 					sum = sum.add(p.getPrice().multiply(courseTo));
 				}
 			}
@@ -42,14 +43,18 @@ public class Converter {
 		}
 	}
 	
-	public static BigDecimal course(String currency) throws JSONException, MalformedURLException, IOException {
+	public static JSONObject getJson() throws JSONException, MalformedURLException, IOException {
 		JSONObject json = new JSONObject(IOUtils.toString(
 				new URL("http://data.fixer.io/api/latest?access_key=" + KEY + "&base=EUR"
-						+ "&symbols=" + currency + "&format=1"),
+						 + "&format=1"),
 				Charset.forName("UTF-8")));
-		json.get("rates");
-		JSONObject json1 = (JSONObject) json.get("rates");
-		BigDecimal course = new BigDecimal( json1.get(currency).toString());
-		return course;
+/*		JSONObject json1 = (JSONObject) j
+ * son.get("rates");
+		BigDecimal course = new BigDecimal( json1.get(currency).toString());*/
+		return json.getJSONObject("rates");
 	}
+	public static BigDecimal getCource(JSONObject json,String str) {
+		return new BigDecimal(json.get(str).toString());
+	}
+	
 }

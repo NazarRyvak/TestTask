@@ -10,6 +10,7 @@ import java.util.Scanner;
 import javax.persistence.EntityManager;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import packageMain.converter.Converter;
 import packageMain.entity.Purchase;
@@ -20,29 +21,28 @@ public class WorkWithConsole {
 
 	private static Scanner sc = new Scanner(System.in);
 
-	private static void savePurchaseToDB(EntityManager em, String data) throws MalformedURLException, IOException {
+	private static void savePurchaseToDB(EntityManager em, String data, JSONObject json) throws MalformedURLException, IOException {
 		Purchase purchase = new Purchase();
-
+		
 		String arr[] = data.split(" ");
 		if (arr.length != 4) {
 			System.out.println("You entered incorrect  data");
 			return;
 		}
 		purchase.setDate(setLocalDate(arr[0]));
+		
 		purchase.setName(arr[1]);
 		try {
 			purchase.setPrice(new BigDecimal(arr[2]));
 		} catch (IllegalArgumentException e) {
 			System.out.println("You enter incorrect type of price");
 		}
-		try {
-			//if we can to convert our currency exist
-			Converter.course(arr[3]);
+		if (json.has(arr[3])) {
 			purchase.setCurrency(arr[3]);
-		} catch (JSONException e) {
+		}else {
 			System.out.println("You enter incorrect type of currency");
 		}
-
+			
 		if (purchase.getDate() == null || purchase.getName() == null || purchase.getCurrency() == null
 				|| purchase.getPrice() == null) {
 			System.out.println("Please enter correct data");
@@ -87,6 +87,8 @@ public class WorkWithConsole {
 
 	public static void consoleMenu(EntityManager em) throws JSONException, IOException {
 
+		
+		
 		while (true) {
 			System.out.println("Enter your operation:");
 			String str = sc.nextLine();
@@ -99,15 +101,16 @@ public class WorkWithConsole {
 				operation = str;
 				data = null;
 			}
+			JSONObject json=Converter.getJson();
 
 			switch (operation) {
 			case "add":
-				savePurchaseToDB(em, data);
+				savePurchaseToDB(em, data,json);
 				break;
 			case "list":
-				if (data==null) {
+				if (data == null) {
 					Query.listPurchase(em);
-				}else {
+				} else {
 					System.out.println("You entered incorrect command");
 				}
 				break;
@@ -115,7 +118,11 @@ public class WorkWithConsole {
 				Query.deletePurchaseByDate(em, setLocalDate(data));
 				break;
 			case "total":
-				Converter.converter(data, em);
+				if (json.has(data)) {
+					Converter.converter(data, em);
+				}else {
+					System.out.println("You enter incorrect type of currency");
+				}	
 				break;
 			case "out":
 				break;
@@ -123,9 +130,9 @@ public class WorkWithConsole {
 				System.out.println("You entered incorrect command");
 				break;
 			}
-			if (operation.equals("out")&&data!=null) {
+			if (operation.equals("out") && data != null) {
 				System.out.println("You entered incorrect command");
-			}else if (operation.equals("out")&&data==null) {
+			} else if (operation.equals("out") && data == null) {
 				System.out.println("Goodbye!");
 				break;
 			}
